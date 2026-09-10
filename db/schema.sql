@@ -31,10 +31,15 @@ CREATE TABLE IF NOT EXISTS kbo.roster_membership (
   player_id text NOT NULL REFERENCES kbo.player(player_id),
   team_id text NOT NULL REFERENCES kbo.team(team_id),
   season integer NOT NULL,
+  uniform_number text,
+  position text,
   start_date date,
   end_date date,
   PRIMARY KEY (player_id, team_id, season, start_date)
 );
+
+ALTER TABLE kbo.roster_membership ADD COLUMN IF NOT EXISTS uniform_number text;
+ALTER TABLE kbo.roster_membership ADD COLUMN IF NOT EXISTS position text;
 
 CREATE TABLE IF NOT EXISTS kbo.game (
   game_id text PRIMARY KEY,

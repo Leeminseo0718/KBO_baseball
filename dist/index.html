@@ -33,6 +33,27 @@
           </div>
           <div id="answer" class="answer" aria-live="polite"></div>
         </section>
+        <section class="roster-section" aria-labelledby="roster-title">
+          <div class="section-head roster-heading">
+            <div><p class="eyebrow">TEAM ROSTER</p><h2 id="roster-title">구단별 선수 명단</h2></div>
+            <div class="roster-source"><strong>KBO 등록 현황</strong><span>2026.09.09 기준 · 총 337명</span></div>
+          </div>
+          <div id="team-tabs" class="team-tabs" role="tablist" aria-label="구단 선택"></div>
+          <article class="panel roster-panel">
+            <div class="roster-toolbar">
+              <div class="selected-team"><span id="team-initial">K</span><div><strong id="selected-team-name">KT</strong><small id="selected-team-count">등록 선수 34명</small></div></div>
+              <div class="roster-controls">
+                <label class="player-search"><span class="sr-only">선수 이름 검색</span><input id="roster-search" type="search" placeholder="선수 이름 검색" autocomplete="off" /></label>
+                <div id="position-filter" class="position-filter" role="group" aria-label="포지션 필터">
+                  <button type="button" class="active" data-position="전체">전체</button><button type="button" data-position="투수">투수</button><button type="button" data-position="포수">포수</button><button type="button" data-position="내야수">내야수</button><button type="button" data-position="외야수">외야수</button>
+                </div>
+              </div>
+            </div>
+            <div id="roster-summary" class="roster-summary" aria-live="polite"></div>
+            <div id="roster-grid" class="roster-grid"></div>
+            <div id="roster-empty" class="roster-empty" hidden>조건에 맞는 선수가 없습니다.</div>
+          </article>
+        </section>
         <section class="game-section" aria-labelledby="game-title">
           <div class="section-head"><div><p class="eyebrow">VERIFIED GAME</p><h2 id="game-title">최근 검증 경기</h2></div><span class="source-tag">NAVER × KBO</span></div>
           <article class="score-card">
