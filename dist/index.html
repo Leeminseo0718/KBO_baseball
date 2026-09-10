@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07101f" />
+    <meta name="description" content="팀과 선수를 검색하고 주요 야구 지표를 비교하는 데이터 탐색 대시보드" />
+    <title>야구 데이터룸</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#top" aria-label="야구 데이터룸 홈">
+        <span class="brand-mark" aria-hidden="true">B</span>
+        <span>야구 데이터룸</span>
+      </a>
+      <div class="data-badge"><span></span> 데모 데이터</div>
+    </header>
+
+    <main id="top">
+      <section class="workspace" aria-labelledby="page-title">
+        <div class="workspace-head">
+          <div>
+            <p class="eyebrow">BASEBALL EXPLORER</p>
+            <h1 id="page-title">숫자 사이에서<br /><em>경기의 흐름</em>을 찾다</h1>
+          </div>
+          <p class="intro">팀과 선수를 고르면 기록의 변화와 강점을 한눈에 비교할 수 있습니다.</p>
+        </div>
+
+        <form class="filter-bar" id="filter-form">
+          <label>
+            <span>시즌</span>
+            <select id="season"><option>2025</option><option>2024</option><option>2023</option></select>
+          </label>
+          <label>
+            <span>팀</span>
+            <select id="team"></select>
+          </label>
+          <label class="search-field">
+            <span>선수 찾기</span>
+            <input id="player-search" type="search" placeholder="이름 또는 포지션" autocomplete="off" />
+          </label>
+          <button type="submit">기록 보기 <span aria-hidden="true">↗</span></button>
+        </form>
+
+        <section class="snapshot" aria-label="선택 팀 핵심 기록">
+          <article class="feature-card">
+            <div class="feature-copy">
+              <p class="section-kicker">TEAM SNAPSHOT</p>
+              <h2 id="team-name">서울 레드폭스</h2>
+              <p id="team-record" class="record">68승 4무 51패</p>
+              <div class="rank-chip"><span id="team-rank">2</span>위</div>
+            </div>
+            <div class="win-ring" id="win-ring" aria-label="승률 0.571">
+              <div><strong id="win-rate">.571</strong><span>승률</span></div>
+            </div>
+          </article>
+
+          <div class="metrics" id="metrics"></div>
+
+          <article class="chart-card">
+            <div class="card-heading">
+              <div><p class="section-kicker">RECENT FORM</p><h2>최근 10경기 득실</h2></div>
+              <div class="legend"><span class="legend-score">득점</span><span class="legend-allow">실점</span></div>
+            </div>
+            <div class="chart" id="form-chart" role="img" aria-label="최근 10경기 득점과 실점 막대그래프"></div>
+          </article>
+        </section>
+
+        <section class="explorer" aria-labelledby="player-title">
+          <div class="section-head">
+            <div>
+              <p class="section-kicker">PLAYER FINDER</p>
+              <h2 id="player-title">선수 기록 탐색</h2>
+            </div>
+            <div class="position-filter" id="position-filter" aria-label="포지션 필터">
+              <button class="active" type="button" data-position="전체">전체</button>
+              <button type="button" data-position="타자">타자</button>
+              <button type="button" data-position="투수">투수</button>
+            </div>
+          </div>
+
+          <div class="player-layout">
+            <article class="player-table-card">
+              <div class="table-meta">
+                <span><strong id="player-count">0</strong>명의 선수</span>
+                <span>행을 선택해 비교</span>
+              </div>
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>선수</th><th>포지션</th><th id="stat-a-head">타율</th><th id="stat-b-head">홈런</th><th id="stat-c-head">OPS</th></tr></thead>
+                  <tbody id="player-rows"></tbody>
+                </table>
+              </div>
+              <div class="empty-state" id="empty-state" hidden>
+                <strong>조건에 맞는 선수가 없습니다</strong>
+                <span>검색어 또는 포지션을 바꿔보세요.</span>
+              </div>
+            </article>
+
+            <aside class="compare-card" aria-labelledby="compare-title">
+              <div class="compare-title-row">
+                <div><p class="section-kicker">PLAYER PROFILE</p><h2 id="compare-title">선수 상세</h2></div>
+                <span class="jersey" id="player-number">#7</span>
+              </div>
+              <div class="player-identity">
+                <div class="initial" id="player-initial">김</div>
+                <div><h3 id="player-name">김도윤</h3><p id="player-meta">유격수 · 우투좌타</p></div>
+              </div>
+              <div class="radar-wrap">
+                <svg id="radar" viewBox="0 0 260 220" role="img" aria-label="선수 역량 레이더 차트"></svg>
+              </div>
+              <div class="player-summary" id="player-summary"></div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="insight-strip" aria-label="데이터 안내">
+          <div><p class="section-kicker">DATA NOTE</p><h2>지금은 구조를 살펴보는 단계입니다.</h2></div>
+          <p>표시된 팀과 선수 기록은 기능 확인용 데모 데이터입니다. 다음 단계에서 보유한 CSV 파일이나 원하는 공식 데이터 소스를 연결할 수 있습니다.</p>
+        </section>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
