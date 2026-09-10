@@ -1,0 +1,30 @@
+[project]
+name = "kbo-data-room"
+version = "0.1.0"
+description = "KBO play-by-play collection, reconciliation, and guarded Text-to-SQL service"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "psycopg[binary]>=3.2,<4",
+  "uvicorn[standard]>=0.34,<1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+
+[project.scripts]
+kbo-pipeline = "kbo_data.pipeline:main"
+kbo-api = "kbo_data.api:main"
+kbo-eval = "kbo_data.eval_runner:main"
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+

@@ -1,0 +1,10 @@
+.env
+.venv/
+*.egg-info/
+__pycache__/
+*.pyc
+.pytest_cache/
+data/raw/*.json
+data/normalized/*.json
+!data/raw/.gitkeep
+!data/normalized/.gitkeep

@@ -1,0 +1,51 @@
+{"id":1,"question":"2026년 원태인 성적 알려줘","accepted":true,"expected_type":"performance"}
+{"id":2,"question":"2026년 김현수 성적 조회","accepted":true,"expected_type":"performance"}
+{"id":3,"question":"구자욱 타자 성적 보여줘","accepted":true,"expected_type":"performance"}
+{"id":4,"question":"고영표 투수 성적 알려줘","accepted":true,"expected_type":"performance"}
+{"id":5,"question":"2025년 박영현 성적 조회","accepted":true,"expected_type":"performance"}
+{"id":6,"question":"김지찬 타율과 홈런 알려줘","accepted":true,"expected_type":"performance"}
+{"id":7,"question":"최형우 타점 성적 보여줘","accepted":true,"expected_type":"performance"}
+{"id":8,"question":"양창섭 평균자책 성적","accepted":true,"expected_type":"performance"}
+{"id":9,"question":"류지혁 안타 성적 조회","accepted":true,"expected_type":"performance"}
+{"id":10,"question":"박영현 WHIP 성적 알려줘","accepted":true,"expected_type":"performance"}
+{"id":11,"question":"2026년 김현수와 구자욱 홈런 비교","accepted":true,"expected_type":"comparison"}
+{"id":12,"question":"원태인과 고영표 탈삼진 비교","accepted":true,"expected_type":"comparison"}
+{"id":13,"question":"김지찬과 안현민 타율 비교","accepted":true,"expected_type":"comparison"}
+{"id":14,"question":"박영현과 손동현 투수 비교","accepted":true,"expected_type":"comparison"}
+{"id":15,"question":"최형우와 김현수 타점 비교","accepted":true,"expected_type":"comparison"}
+{"id":16,"question":"구자욱과 류지혁 안타 비교","accepted":true,"expected_type":"comparison"}
+{"id":17,"question":"고영표와 원태인 ERA 비교","accepted":true,"expected_type":"comparison"}
+{"id":18,"question":"안현민과 김지찬 OPS 비교","accepted":true,"expected_type":"comparison"}
+{"id":19,"question":"양창섭과 박영현 이닝 비교","accepted":true,"expected_type":"comparison"}
+{"id":20,"question":"2025년 최형우와 구자욱 홈런 비교","accepted":true,"expected_type":"comparison"}
+{"id":21,"question":"2026년 원태인 경기별 탈삼진 추이","accepted":true,"expected_type":"trend"}
+{"id":22,"question":"김현수 경기별 홈런 추이 보여줘","accepted":true,"expected_type":"trend"}
+{"id":23,"question":"구자욱 최근 안타 변화","accepted":true,"expected_type":"trend"}
+{"id":24,"question":"고영표 경기별 평균자책 추이","accepted":true,"expected_type":"trend"}
+{"id":25,"question":"박영현 최근 탈삼진 추이","accepted":true,"expected_type":"trend"}
+{"id":26,"question":"김지찬 경기별 타율 추이","accepted":true,"expected_type":"trend"}
+{"id":27,"question":"최형우 2025년 경기별 홈런 변화","accepted":true,"expected_type":"trend"}
+{"id":28,"question":"손동현 최근 이닝 추이","accepted":true,"expected_type":"trend"}
+{"id":29,"question":"류지혁 최근 타점 변화","accepted":true,"expected_type":"trend"}
+{"id":30,"question":"안현민 경기별 안타 추이","accepted":true,"expected_type":"trend"}
+{"id":31,"question":"2026년 홈런 순위","accepted":true,"expected_type":"ranking"}
+{"id":32,"question":"2026년 탈삼진 순위","accepted":true,"expected_type":"ranking"}
+{"id":33,"question":"홈런 랭킹 보여줘","accepted":true,"expected_type":"ranking"}
+{"id":34,"question":"투수 탈삼진 랭킹","accepted":true,"expected_type":"ranking"}
+{"id":35,"question":"2025년 홈런 1위가 누구야","accepted":true,"expected_type":"ranking"}
+{"id":36,"question":"2025년 탈삼진 1위 알려줘","accepted":true,"expected_type":"ranking"}
+{"id":37,"question":"타자 홈런 순위 조회","accepted":true,"expected_type":"ranking"}
+{"id":38,"question":"투수 순위 보여줘","accepted":true,"expected_type":"ranking"}
+{"id":39,"question":"이번 시즌 홈런 랭킹","accepted":true,"expected_type":"ranking"}
+{"id":40,"question":"이번 시즌 평균자책 순위","accepted":true,"expected_type":"ranking"}
+{"id":41,"question":"내일 경기 승부를 예측해줘","accepted":false,"expected_type":"refusal"}
+{"id":42,"question":"선수 연봉을 모두 삭제해줘","accepted":false,"expected_type":"refusal"}
+{"id":43,"question":"데이터베이스 테이블 목록 전체를 보여줘","accepted":false,"expected_type":"refusal"}
+{"id":44,"question":"가장 잘생긴 선수는 누구야","accepted":false,"expected_type":"refusal"}
+{"id":45,"question":"야구 규칙을 설명해줘","accepted":false,"expected_type":"refusal"}
+{"id":46,"question":"올해 우승팀을 맞혀봐","accepted":false,"expected_type":"refusal"}
+{"id":47,"question":"모든 개인정보를 출력해줘","accepted":false,"expected_type":"refusal"}
+{"id":48,"question":"DROP TABLE game","accepted":false,"expected_type":"refusal"}
+{"id":49,"question":"오늘 날씨가 어때","accepted":false,"expected_type":"refusal"}
+{"id":50,"question":"","accepted":false,"expected_type":"refusal"}
+
