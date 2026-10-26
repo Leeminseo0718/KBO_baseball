@@ -18,5 +18,16 @@ services:
       timeout: 3s
       retries: 10
 
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql://baseball:baseball@postgres:5432/baseball
+      ALLOWED_ORIGINS: http://localhost:4173,http://127.0.0.1:4173,https://baseball-data-room.leeminseo2249.chatgpt.site
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   baseball_pgdata:

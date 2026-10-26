@@ -83,6 +83,8 @@ const verifiedGame = {
   ]
 };
 
+let displayGame = {...verifiedGame};
+
 const sql = {
   pitching: `SELECT game_date, innings_outs, strikeouts, earned_runs, pitches\nFROM kbo.v_player_game_pitching\nWHERE season = 2026 AND player_name = $1\nORDER BY game_date DESC LIMIT 100`,
   batting: `SELECT game_date, at_bats, hits, home_runs, rbi\nFROM kbo.v_player_game_batting\nWHERE season = 2026 AND player_name = $1\nORDER BY game_date DESC LIMIT 100`,
@@ -241,14 +243,143 @@ document.querySelector('#position-filter').addEventListener('click', event => {
 
 rosterSearch.addEventListener('input', renderRoster);
 
-document.querySelector('#innings').innerHTML = verifiedGame.innings.away.map((away,index) => `<div class="inning"><i class="away" style="height:${Math.max(away*36,2)}%" title="KT ${away}점"></i><i class="home" style="height:${Math.max(verifiedGame.innings.home[index]*36,2)}%" title="삼성 ${verifiedGame.innings.home[index]}점"></i><small>${index+1}</small></div>`).join('');
-document.querySelector('#leaders').innerHTML = verifiedGame.leaders.map(player => `<tr data-name="${escapeHTML(player.name)}" data-team="${escapeHTML(player.team)}" data-kind="${escapeHTML(player.kind)}"><td>${escapeHTML(player.name)}</td><td>${escapeHTML(player.team)}</td><td>${escapeHTML(player.kind)}</td><td>${escapeHTML(player.line)}</td><td>${escapeHTML(player.result)}</td></tr>`).join('');
-document.querySelectorAll('#leaders tr').forEach(row => row.addEventListener('click', () => {
-  const suffix = row.dataset.kind === '투수' ? '의 최근 경기 투구 내용을 보여줘' : '의 최근 경기 타격 성적을 보여줘';
-  questionInput.value = `${row.dataset.team} ${row.dataset.name}${suffix}`;
-  submitQuestion(questionInput.value);
-  document.querySelector('.ask-card').scrollIntoView({behavior:'smooth', block:'start'});
-}));
+function inningValues(value) {
+  const values = Array.isArray(value)
+    ? value
+    : Object.entries(value || {}).sort(([left], [right]) => Number(left) - Number(right)).map(([, score]) => score);
+  return values.map(score => Number.isFinite(Number(score)) ? Number(score) : 0);
+}
+
+function formatGameDate(value) {
+  return String(value || '').replaceAll('-', '.');
+}
+
+function formatSyncTime(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '갱신 시각 확인 불가';
+  return `${new Intl.DateTimeFormat('ko-KR', {month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', hour12:false}).format(date)} 갱신`;
+}
+
+function setQuality(quality = {}) {
+  document.querySelector('#quality-events').textContent = quality.events ?? quality.pitch_events ?? '—';
+  document.querySelector('#quality-batting').textContent = quality.batting_rows ?? '—';
+  document.querySelector('#quality-pitching').textContent = quality.pitching_rows ?? '—';
+  document.querySelector('#quality-players').textContent = quality.identified_players ?? '—';
+}
+
+function renderGame() {
+  const awayInnings = inningValues(displayGame.innings?.away);
+  const homeInnings = inningValues(displayGame.innings?.home);
+  const inningCount = Math.max(awayInnings.length, homeInnings.length, 9);
+  const innings = Array.from({length: inningCount}, (_, index) => ({away: awayInnings[index] || 0, home: homeInnings[index] || 0}));
+  document.querySelector('#game-date').textContent = formatGameDate(displayGame.date);
+  document.querySelector('#game-status').textContent = [displayGame.stadium, displayGame.statusLabel].filter(Boolean).join(' · ');
+  document.querySelector('#away-team').textContent = displayGame.away;
+  document.querySelector('#home-team').textContent = displayGame.home;
+  document.querySelector('#away-score').textContent = displayGame.awayScore;
+  document.querySelector('#home-score').textContent = displayGame.homeScore;
+  document.querySelector('#inning-summary').textContent = displayGame.currentInning || `${displayGame.away} ${displayGame.awayScore} : ${displayGame.homeScore} ${displayGame.home}`;
+  document.querySelector('#score-check').innerHTML = displayGame.scoreMessage || '<span>✓</span> 문자중계와 박스스코어 득점 일치';
+  document.querySelector('#innings').innerHTML = innings.map((inning,index) => `<div class="inning"><i class="away" style="height:${Math.max(inning.away*36,2)}%" title="${escapeHTML(displayGame.away)} ${inning.away}점"></i><i class="home" style="height:${Math.max(inning.home*36,2)}%" title="${escapeHTML(displayGame.home)} ${inning.home}점"></i><small>${index+1}</small></div>`).join('');
+  renderLeaders();
+}
+
+function renderLeaders() {
+  const leaders = displayGame.leaders || [];
+  document.querySelector('#leaders').innerHTML = leaders.length
+    ? leaders.map(player => `<tr data-name="${escapeHTML(player.name)}" data-team="${escapeHTML(player.team)}" data-kind="${escapeHTML(player.kind)}"><td>${escapeHTML(player.name)}</td><td>${escapeHTML(player.team)}</td><td>${escapeHTML(player.kind)}</td><td>${escapeHTML(player.line)}</td><td>${escapeHTML(player.result)}</td></tr>`).join('')
+    : '<tr class="empty-row"><td colspan="5">선수별 상세 기록은 경기 중 수집 후 표시됩니다.</td></tr>';
+  document.querySelectorAll('#leaders tr[data-name]').forEach(row => row.addEventListener('click', () => {
+    const suffix = row.dataset.kind === '투수' ? '의 최근 경기 투구 내용을 보여줘' : '의 최근 경기 타격 성적을 보여줘';
+    questionInput.value = `${row.dataset.team} ${row.dataset.name}${suffix}`;
+    submitQuestion(questionInput.value);
+    document.querySelector('.ask-card').scrollIntoView({behavior:'smooth', block:'start'});
+  }));
+}
+
+function pickSnapshotGame(games) {
+  const liveStatuses = new Set(['STARTED','LIVE','PLAYING','SUSPENDED']);
+  return games.find(game => liveStatuses.has(game.status)) || games.find(game => game.status === 'BEFORE') || [...games].reverse().find(game => game.status === 'RESULT') || games[0];
+}
+
+function applyPublicSnapshot(snapshot) {
+  const game = pickSnapshotGame(snapshot.games || []);
+  if (!game) return false;
+  const isLive = ['STARTED','LIVE','PLAYING','SUSPENDED'].includes(game.status);
+  const isFinal = game.status === 'RESULT';
+  displayGame = {
+    date: game.date || snapshot.date,
+    away: game.away?.name || game.away?.code || '원정',
+    home: game.home?.name || game.home?.code || '홈',
+    awayScore: game.away?.score ?? 0,
+    homeScore: game.home?.score ?? 0,
+    stadium: game.stadium || '',
+    statusLabel: game.statusLabel || game.status || '상태 확인 중',
+    currentInning: game.currentInning || '',
+    innings: {away: game.away?.scoreByInning || [], home: game.home?.scoreByInning || []},
+    leaders: [],
+    scoreMessage: isLive ? '<span>●</span> 네이버 문자중계 점수 자동 갱신 중' : isFinal ? '<span>✓</span> 경기 종료 점수 수집 완료' : '<span>↻</span> 경기 시작 후 점수가 자동 갱신됩니다'
+  };
+  document.querySelector('#sync-label').textContent = isLive ? '경기 중 자동 갱신' : '일정 자동 갱신';
+  document.querySelector('#sync-time').textContent = formatSyncTime(snapshot.generatedAt);
+  document.querySelector('#source-tag').textContent = isLive ? 'NAVER LIVE' : 'NAVER SCHEDULE';
+  document.querySelector('#live-dot').classList.toggle('is-live', isLive);
+  setQuality({});
+  renderGame();
+  return true;
+}
+
+function apiLeader(player) {
+  if (player.kind === '투수') {
+    const outs = Number(player.innings_outs || 0);
+    const innings = `${Math.floor(outs / 3)}.${outs % 3}`;
+    return {...player, line:`${innings}이닝 · ${player.pitches ?? 0}구`, result:`${player.strikeouts ?? 0}K · ${player.earned_runs ?? 0}자책${player.decision ? ` · ${player.decision}` : ''}`};
+  }
+  return {...player, line:`${player.at_bats ?? 0}타수 ${player.hits ?? 0}안타`, result:`${player.home_runs ?? 0}홈런 · ${player.rbi ?? 0}타점`};
+}
+
+function applyApiDashboard(payload) {
+  const game = payload.latestGame;
+  if (!game) return false;
+  displayGame = {
+    date: game.game_date,
+    away: game.away_team,
+    home: game.home_team,
+    awayScore: game.away_score ?? 0,
+    homeScore: game.home_score ?? 0,
+    stadium: game.stadium || '',
+    statusLabel: ['RESULT','FINAL'].includes(game.status) ? '경기 종료' : '경기 중',
+    currentInning: '',
+    innings: {away: [], home: []},
+    leaders: (payload.leaders || []).map(apiLeader),
+    scoreMessage: '<span>✓</span> PostgreSQL 분석 마트 최신 적재 데이터'
+  };
+  document.querySelector('#sync-label').textContent = '상세 기록 자동 갱신';
+  document.querySelector('#sync-time').textContent = formatSyncTime(payload.generatedAt);
+  document.querySelector('#source-tag').textContent = 'NAVER × POSTGRESQL';
+  document.querySelector('#live-dot').classList.add('is-live');
+  setQuality(payload.quality || {});
+  renderGame();
+  return true;
+}
+
+async function syncDashboard() {
+  const apiBase = String(window.KBO_API_URL || '').replace(/\/$/, '');
+  if (apiBase) {
+    try {
+      const response = await fetch(`${apiBase}/dashboard`, {cache:'no-store'});
+      if (response.ok && applyApiDashboard(await response.json())) return;
+    } catch (_) {}
+  }
+  try {
+    const snapshotUrl = window.KBO_PUBLIC_SNAPSHOT_URL || './data/live.json';
+    const response = await fetch(snapshotUrl, {cache:'no-store'});
+    if (!response.ok) throw new Error('snapshot unavailable');
+    if (applyPublicSnapshot(await response.json())) return;
+  } catch (_) {}
+  document.querySelector('#sync-label').textContent = '검증 데이터 표시';
+  document.querySelector('#sync-time').textContent = '자동 갱신 대기';
+}
 
 function registerWebMcp() {
   const context = document.modelContext;
@@ -279,5 +410,11 @@ function registerWebMcp() {
 
 renderTeamTabs();
 renderRoster();
+renderGame();
 submitQuestion(questionInput.value);
 registerWebMcp();
+syncDashboard();
+window.setInterval(syncDashboard, 60_000);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) syncDashboard();
+});

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "source": "naver_sports",
+  "date": "2026-10-26",
+  "liveGameCount": 0,
+  "games": [
+    {
+      "gameId": "55551026HTSS02026",
+      "date": "2026-10-26",
+      "dateTime": "2026-10-26T18:30:00",
+      "status": "BEFORE",
+      "statusLabel": "경기 예정",
+      "stadium": "대구",
+      "currentInning": "",
+      "away": {
+        "code": "HT",
+        "name": "KIA",
+        "score": 0,
+        "scoreByInning": [
+          "-",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-"
+        ],
+        "rheb": {}
+      },
+      "home": {
+        "code": "SS",
+        "name": "삼성",
+        "score": 0,
+        "scoreByInning": [
+          "-",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-",
+          "-"
+        ],
+        "rheb": {}
+      }
+    }
+  ],
+  "generatedAt": "2026-10-26T08:59:29+09:00"
+}

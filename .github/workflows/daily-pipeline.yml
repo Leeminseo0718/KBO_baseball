@@ -24,5 +24,10 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           PIPELINE_DATE: ${{ inputs.date }}
-        run: python -m kbo_data.pipeline --date "${PIPELINE_DATE:-$(date -u -d '9 hours ago' +%F)}" --load-db
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::notice::DATABASE_URL secret is not configured; skipping database collection."
+            exit 0
+          fi
+          python -m kbo_data.pipeline --date "${PIPELINE_DATE:-$(date -u -d '9 hours ago' +%F)}" --mode completed --load-db
 

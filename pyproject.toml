@@ -16,6 +16,7 @@ dev = ["pytest>=8,<9"]
 kbo-pipeline = "kbo_data.pipeline:main"
 kbo-api = "kbo_data.api:main"
 kbo-eval = "kbo_data.eval_runner:main"
+kbo-public-snapshot = "kbo_data.public_snapshot:main"
 
 [build-system]
 requires = ["setuptools>=75"]

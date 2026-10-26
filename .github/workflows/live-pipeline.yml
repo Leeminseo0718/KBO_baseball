@@ -1,0 +1,56 @@
+name: Live KBO refresh
+
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: KST game date (YYYY-MM-DD)
+        required: false
+  schedule:
+    - cron: "2-57/5 4-15 * 3-11 *"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: live-kbo-refresh
+  cancel-in-progress: true
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e .
+      - name: Resolve KST game date
+        id: game-date
+        env:
+          INPUT_DATE: ${{ inputs.date }}
+        run: echo "date=${INPUT_DATE:-$(date -u -d '9 hours' +%F)}" >> "$GITHUB_OUTPUT"
+      - name: Build public schedule and live-score snapshot
+        run: python -m kbo_data.public_snapshot --date "${{ steps.game-date.outputs.date }}" --output dist/data/live.json
+      - name: Collect live game detail when database is configured
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::notice::DATABASE_URL secret is not configured; public score snapshot will still update."
+            exit 0
+          fi
+          python -m kbo_data.pipeline --date "${{ steps.game-date.outputs.date }}" --mode live --load-db
+      - name: Publish changed public snapshot
+        run: |
+          if git diff --quiet -- dist/data/live.json; then
+            echo "No public score change."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/data/live.json
+          git commit -m "chore(data): refresh KBO live snapshot"
+          git push

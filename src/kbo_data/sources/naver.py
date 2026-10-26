@@ -54,8 +54,24 @@ class NaverSportsClient:
         return self._game_snapshot(game_id, "relay", suffix, source_key=f"{game_id}:{inning}")
 
     def completed_game_ids(self, schedule: NaverSnapshot) -> list[str]:
-        games = schedule.payload.get("result", {}).get("games", [])
-        return [str(game["gameId"]) for game in games if game.get("statusCode") == "RESULT"]
+        return self.game_ids(schedule, mode="completed")
+
+    @staticmethod
+    def games(schedule: NaverSnapshot) -> list[dict[str, Any]]:
+        return list(schedule.payload.get("result", {}).get("games", []))
+
+    def game_ids(self, schedule: NaverSnapshot, *, mode: str) -> list[str]:
+        games = self.games(schedule)
+        if mode == "completed":
+            selected = [game for game in games if game.get("statusCode") == "RESULT"]
+        elif mode == "live":
+            terminal = {"BEFORE", "RESULT", "CANCEL", "CANCELED"}
+            selected = [game for game in games if str(game.get("statusCode") or "") not in terminal]
+        elif mode == "all":
+            selected = [game for game in games if game.get("statusCode") not in {"CANCEL", "CANCELED"}]
+        else:
+            raise ValueError(f"Unsupported collection mode: {mode}")
+        return [str(game["gameId"]) for game in selected if game.get("gameId")]
 
     def _game_snapshot(
         self,

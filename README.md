@@ -73,7 +73,46 @@ Windows PowerShell에서는 가상환경 활성화 명령으로 아래 명령을
 
 API가 실행되면 <http://127.0.0.1:8000/health>에서 상태를 확인할 수 있습니다. PostgreSQL 연결 정보나 OpenAI API 키가 필요하면 `.env`에 값을 설정하세요. 비밀 키가 들어간 `.env` 파일은 Git에 올리지 않습니다.
 
-매일 수집은 `.github/workflows/daily-pipeline.yml`과 같은 명령을 실행합니다. PostgreSQL과 API는 브라우저에 직접 노출하지 않고, 대시보드는 API만 호출합니다.
+PostgreSQL과 API를 한 번에 실행하려면 Docker Desktop을 켠 뒤 아래 명령을 사용합니다.
+
+```bash
+docker compose up --build
+```
+
+## 자동 갱신
+
+자동화는 비용 없이 시작할 수 있는 공개 점수 경로와, 타석·투구 상세를 적재하는 데이터베이스 경로로 나뉩니다.
+
+1. `.github/workflows/live-pipeline.yml`이 3월부터 11월까지 경기 시간대에 5분 간격으로 실행됩니다.
+2. 네이버 스포츠의 당일 일정·상태·점수·이닝별 득점을 `dist/data/live.json`에 저장합니다.
+3. 값이 달라졌을 때만 GitHub Actions 봇이 저장소에 커밋합니다.
+4. 웹 화면은 이 파일을 1분마다 확인하므로 별도 서버 없이도 일정과 점수가 자동으로 바뀝니다.
+5. `DATABASE_URL` 저장소 비밀 변수가 있으면 같은 실행에서 경기 중 문자중계 상세도 PostgreSQL에 적재합니다.
+6. 매일 종료 경기 재검증은 `.github/workflows/daily-pipeline.yml`이 담당합니다.
+
+GitHub의 `Settings > Secrets and variables > Actions > New repository secret`에서 `DATABASE_URL`을 등록하면 상세 적재가 활성화됩니다. 예시는 다음과 같으며 실제 비밀번호를 README나 소스에 넣으면 안 됩니다.
+
+```text
+postgresql://USER:PASSWORD@HOST:5432/DATABASE?sslmode=require
+```
+
+배포한 API 주소가 생기면 `dist/config.js`의 `window.KBO_API_URL`에 주소를 지정합니다. API를 설정하지 않은 경우에도 공개 점수 자동 갱신은 그대로 동작합니다.
+
+```javascript
+window.KBO_API_URL = 'https://your-api.example.com';
+```
+
+수동으로 오늘 데이터를 갱신하거나 수집기를 점검할 때는 다음 명령을 사용할 수 있습니다.
+
+```bash
+python -m kbo_data.public_snapshot --date 2026-10-26
+python -m kbo_data.pipeline --date 2026-10-26 --mode live --load-db
+python -m kbo_data.pipeline --date 2026-10-26 --mode completed --load-db
+```
+
+GitHub Actions의 5분 주기는 초 단위 스트리밍이 아닌 준실시간 방식이며, 서비스 부하에 따라 실행이 조금 늦어질 수 있습니다. 더 짧은 지연이 필요하면 동일한 수집기를 상시 실행 서버에 배포하고 네이버 호출 간격과 이용 조건을 함께 관리해야 합니다.
+
+PostgreSQL은 브라우저에 직접 노출하지 않고, 대시보드는 읽기 전용 API만 호출합니다.
 
 `OPENAI_API_KEY`가 없을 때는 검증 가능한 템플릿 플래너가 네 가지 질문 유형을 처리합니다. 키가 준비되면 Responses API Structured Outputs 어댑터를 활성화할 수 있도록 경계를 분리했습니다.
 
