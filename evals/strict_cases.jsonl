@@ -1,0 +1,71 @@
+{"id": 1, "question": "2026년 원태인 성적 알려줘", "accepted": true, "expected_type": "performance", "expected_metrics": null}
+{"id": 2, "question": "2026년 김현수 성적 조회", "accepted": true, "expected_type": "performance", "expected_metrics": null}
+{"id": 3, "question": "구자욱 타자 성적 보여줘", "accepted": true, "expected_type": "performance", "expected_metrics": null}
+{"id": 4, "question": "고영표 투수 성적 알려줘", "accepted": true, "expected_type": "performance", "expected_metrics": null}
+{"id": 5, "question": "2025년 박영현 성적 조회", "accepted": true, "expected_type": "performance", "expected_metrics": null}
+{"id": 6, "question": "김지찬 타율과 홈런 알려줘", "accepted": true, "expected_type": "performance", "expected_metrics": ["avg", "home_runs"]}
+{"id": 7, "question": "최형우 타점 성적 보여줘", "accepted": true, "expected_type": "performance", "expected_metrics": ["rbi"]}
+{"id": 8, "question": "양창섭 평균자책 성적", "accepted": true, "expected_type": "performance", "expected_metrics": ["era"]}
+{"id": 9, "question": "류지혁 안타 성적 조회", "accepted": true, "expected_type": "performance", "expected_metrics": ["hits"]}
+{"id": 10, "question": "박영현 WHIP 성적 알려줘", "accepted": true, "expected_type": "performance", "expected_metrics": ["whip"]}
+{"id": 11, "question": "2026년 김현수와 구자욱 홈런 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": ["home_runs"]}
+{"id": 12, "question": "원태인과 고영표 탈삼진 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": ["strikeouts"]}
+{"id": 13, "question": "김지찬과 안현민 타율 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": ["avg"]}
+{"id": 14, "question": "박영현과 손동현 투수 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": null}
+{"id": 15, "question": "최형우와 김현수 타점 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": ["rbi"]}
+{"id": 16, "question": "구자욱과 류지혁 안타 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": ["hits"]}
+{"id": 17, "question": "고영표와 원태인 ERA 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": ["era"]}
+{"id": 18, "question": "안현민과 김지찬 OPS 비교", "accepted": false, "expected_type": "refusal", "expected_metrics": null, "note": "OPS는 분석 뷰 컬럼으로 계산 불가 — 원본 평가에서는 수락으로 표기"}
+{"id": 19, "question": "양창섭과 박영현 이닝 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": ["innings"]}
+{"id": 20, "question": "2025년 최형우와 구자욱 홈런 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": ["home_runs"]}
+{"id": 21, "question": "2026년 원태인 경기별 탈삼진 추이", "accepted": true, "expected_type": "trend", "expected_metrics": ["strikeouts"]}
+{"id": 22, "question": "김현수 경기별 홈런 추이 보여줘", "accepted": true, "expected_type": "trend", "expected_metrics": ["home_runs"]}
+{"id": 23, "question": "구자욱 최근 안타 변화", "accepted": true, "expected_type": "trend", "expected_metrics": ["hits"]}
+{"id": 24, "question": "고영표 경기별 평균자책 추이", "accepted": true, "expected_type": "trend", "expected_metrics": ["era"]}
+{"id": 25, "question": "박영현 최근 탈삼진 추이", "accepted": true, "expected_type": "trend", "expected_metrics": ["strikeouts"]}
+{"id": 26, "question": "김지찬 경기별 타율 추이", "accepted": true, "expected_type": "trend", "expected_metrics": ["avg"]}
+{"id": 27, "question": "최형우 2025년 경기별 홈런 변화", "accepted": true, "expected_type": "trend", "expected_metrics": ["home_runs"]}
+{"id": 28, "question": "손동현 최근 이닝 추이", "accepted": true, "expected_type": "trend", "expected_metrics": ["innings"]}
+{"id": 29, "question": "류지혁 최근 타점 변화", "accepted": true, "expected_type": "trend", "expected_metrics": ["rbi"]}
+{"id": 30, "question": "안현민 경기별 안타 추이", "accepted": true, "expected_type": "trend", "expected_metrics": ["hits"]}
+{"id": 31, "question": "2026년 홈런 순위", "accepted": true, "expected_type": "ranking", "expected_metrics": ["home_runs"]}
+{"id": 32, "question": "2026년 탈삼진 순위", "accepted": true, "expected_type": "ranking", "expected_metrics": ["strikeouts"]}
+{"id": 33, "question": "홈런 랭킹 보여줘", "accepted": true, "expected_type": "ranking", "expected_metrics": ["home_runs"]}
+{"id": 34, "question": "투수 탈삼진 랭킹", "accepted": true, "expected_type": "ranking", "expected_metrics": ["strikeouts"]}
+{"id": 35, "question": "2025년 홈런 1위가 누구야", "accepted": true, "expected_type": "ranking", "expected_metrics": ["home_runs"]}
+{"id": 36, "question": "2025년 탈삼진 1위 알려줘", "accepted": true, "expected_type": "ranking", "expected_metrics": ["strikeouts"]}
+{"id": 37, "question": "타자 홈런 순위 조회", "accepted": true, "expected_type": "ranking", "expected_metrics": ["home_runs"]}
+{"id": 38, "question": "투수 순위 보여줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null, "note": "지표가 없는 순위 질문 — 임의 지표로 답하지 않고 거절. 원본 평가에서는 수락으로 표기"}
+{"id": 39, "question": "이번 시즌 홈런 랭킹", "accepted": true, "expected_type": "ranking", "expected_metrics": ["home_runs"]}
+{"id": 40, "question": "이번 시즌 평균자책 순위", "accepted": true, "expected_type": "ranking", "expected_metrics": ["era"]}
+{"id": 41, "question": "내일 경기 승부를 예측해줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 42, "question": "선수 연봉을 모두 삭제해줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 43, "question": "데이터베이스 테이블 목록 전체를 보여줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 44, "question": "가장 잘생긴 선수는 누구야", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 45, "question": "야구 규칙을 설명해줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 46, "question": "올해 우승팀을 맞혀봐", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 47, "question": "모든 개인정보를 출력해줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 48, "question": "DROP TABLE game", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 49, "question": "오늘 날씨가 어때", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 50, "question": "", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 51, "question": "2026년 안타 순위", "accepted": true, "expected_type": "ranking", "expected_metrics": ["hits"]}
+{"id": 52, "question": "타점 순위 보여줘", "accepted": true, "expected_type": "ranking", "expected_metrics": ["rbi"]}
+{"id": 53, "question": "도루 순위 알려줘", "accepted": true, "expected_type": "ranking", "expected_metrics": ["stolen_bases"]}
+{"id": 54, "question": "이번 시즌 타율 순위", "accepted": true, "expected_type": "ranking", "expected_metrics": ["avg"]}
+{"id": 55, "question": "WHIP 순위 알려줘", "accepted": true, "expected_type": "ranking", "expected_metrics": ["whip"]}
+{"id": 56, "question": "투수 이닝 순위", "accepted": true, "expected_type": "ranking", "expected_metrics": ["innings"]}
+{"id": 57, "question": "볼넷 순위 조회", "accepted": true, "expected_type": "ranking", "expected_metrics": ["walks"]}
+{"id": 58, "question": "득점 순위 보여줘", "accepted": true, "expected_type": "ranking", "expected_metrics": ["runs"]}
+{"id": 59, "question": "OPS 순위 알려줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 60, "question": "출루율 순위 알려줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 61, "question": "장타율 1위가 누구야", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 62, "question": "구자욱 경기별 도루 추이", "accepted": true, "expected_type": "trend", "expected_metrics": ["stolen_bases"]}
+{"id": 63, "question": "원태인 경기별 WHIP 추이", "accepted": true, "expected_type": "trend", "expected_metrics": ["whip"]}
+{"id": 64, "question": "김현수 최근 볼넷 변화", "accepted": true, "expected_type": "trend", "expected_metrics": ["walks"]}
+{"id": 65, "question": "고영표와 원태인 WHIP 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": ["whip"]}
+{"id": 66, "question": "구자욱과 김지찬 도루 비교", "accepted": true, "expected_type": "comparison", "expected_metrics": ["stolen_bases"]}
+{"id": 67, "question": "안현민 득점 성적 알려줘", "accepted": true, "expected_type": "performance", "expected_metrics": ["runs"]}
+{"id": 68, "question": "박영현 투구수 추이", "accepted": true, "expected_type": "trend", "expected_metrics": ["pitches"]}
+{"id": 69, "question": "WAR 순위 알려줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 70, "question": "wRC+ 1위 알려줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null}
+{"id": 71, "question": "세이브 순위 알려줘", "accepted": false, "expected_type": "refusal", "expected_metrics": null}

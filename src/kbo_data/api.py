@@ -8,7 +8,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from kbo_data.query_engine import TemplatePlanner
+from kbo_data.rag_planner import RagPlanner
 
 
 app = FastAPI(title="KBO Data Room API", version="0.1.0")
@@ -145,7 +145,7 @@ def latest_games(limit: int = 10) -> dict[str, Any]:
 
 @app.post("/query")
 def query(request: QuestionRequest) -> dict[str, Any]:
-    plan = TemplatePlanner().plan(request.question)
+    plan = RagPlanner.from_env().plan(request.question)
     response = {"plan": plan.public_dict(), "columns": [], "rows": []}
     if not plan.accepted or not os.getenv("DATABASE_URL"):
         return response

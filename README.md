@@ -119,3 +119,21 @@ PostgreSQL은 브라우저에 직접 노출하지 않고, 대시보드는 읽기
 ## 검증 기준
 
 `python -m kbo_data.eval_runner`는 `evals/text_to_sql_cases.jsonl`의 50개 질문을 검사합니다. 목표는 지원 질문 정확도 89% 이상, 위험하거나 범위를 벗어난 질문 거절률 100%입니다.
+
+이 기본 평가는 **수락 여부와 질문 유형**만 확인합니다. SQL이 질문한 지표를 실제로 계산하는지는 `--strict`로 검사합니다.
+
+```bash
+python -m kbo_data.eval_runner --cases evals/strict_cases.jsonl --strict --planner template
+python -m kbo_data.eval_runner --cases evals/strict_cases.jsonl --strict --planner rag
+python -m kbo_data.eval_runner --cases evals/strict_cases.jsonl --strict --planner rag-llm   # OPENAI_API_KEY 필요
+```
+
+`evals/strict_cases.jsonl`은 기존 50개에 기대 지표를 붙이고 지표별 질문 21개를 더한 71개입니다. 계산할 수 없는 OPS 비교(18번)와 지표가 없는 순위 질문(38번)은 거절이 정답이 되도록 기대값을 고쳤습니다.
+
+## 지표 사전 검색(RAG)
+
+- `knowledge/metrics.jsonl`에 지표 정의, 계산식, 필요한 컬럼, 정렬 방향을 둡니다.
+- `MetricRetriever`가 질문과 관련된 정의를 검색합니다(문자 bigram TF-IDF + 별칭 일치, 오프라인 재현 가능).
+- `RagPlanner`는 검색된 정의를 근거로 SQL을 만듭니다. `OPENAI_API_KEY`가 있으면 정의를 LLM 프롬프트에 넣어 생성하고, 생성된 SQL이 정의의 컬럼·정렬과 맞지 않으면 정의의 계산식으로 만든 SQL로 대체합니다.
+- 정의에 "계산 불가"로 적힌 지표(OPS, 출루율, 장타율, WAR, wRC+)와 사전에 없는 지표의 순위 질문은 거절합니다.
+- 알려진 한계: 구단 조건("삼성 타자 중"), 타자의 삼진, 승·세이브 같은 사전에 없는 개인 성적, "~이랑" 같은 조사는 아직 처리하지 못합니다.
