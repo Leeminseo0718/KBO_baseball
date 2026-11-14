@@ -1,0 +1,17 @@
+{"id":"avg","name":"타율","aliases":["타율","AVG"],"side":"batting","available":true,"definition":"안타를 타수로 나눈 값. 규정타석 조건은 적용하지 않는다.","columns":["hits","at_bats"],"expr":"ROUND(SUM(hits)::numeric / NULLIF(SUM(at_bats), 0), 3)","order":"DESC"}
+{"id":"hits","name":"안타","aliases":["안타"],"side":"batting","available":true,"definition":"타자가 기록한 안타 수의 합.","columns":["hits"],"expr":"SUM(hits)","order":"DESC"}
+{"id":"home_runs","name":"홈런","aliases":["홈런"],"side":"batting","available":true,"definition":"타자가 기록한 홈런 수의 합.","columns":["home_runs"],"expr":"SUM(home_runs)","order":"DESC"}
+{"id":"rbi","name":"타점","aliases":["타점","RBI"],"side":"batting","available":true,"definition":"타자의 타격으로 주자가 득점한 수의 합.","columns":["rbi"],"expr":"SUM(rbi)","order":"DESC"}
+{"id":"runs","name":"득점","aliases":["득점"],"side":"batting","available":true,"definition":"타자 본인이 홈을 밟은 횟수의 합.","columns":["runs"],"expr":"SUM(runs)","order":"DESC"}
+{"id":"stolen_bases","name":"도루","aliases":["도루"],"side":"batting","available":true,"definition":"타자(주자)가 성공한 도루 수의 합.","columns":["stolen_bases"],"expr":"SUM(stolen_bases)","order":"DESC"}
+{"id":"walks","name":"볼넷","aliases":["볼넷","사구"],"side":"batting","available":true,"definition":"타자가 얻은 볼넷 수의 합.","columns":["walks"],"expr":"SUM(walks)","order":"DESC"}
+{"id":"era","name":"평균자책점","aliases":["평균자책","ERA","방어율"],"side":"pitching","available":true,"definition":"자책점에 9를 곱해 투구 이닝으로 나눈 값. 이닝은 아웃카운트(innings_outs)로 저장되므로 자책점×27÷아웃카운트로 계산한다. 낮을수록 좋다.","columns":["earned_runs","innings_outs"],"expr":"ROUND(SUM(earned_runs) * 27.0 / NULLIF(SUM(innings_outs), 0), 2)","order":"ASC"}
+{"id":"whip","name":"WHIP","aliases":["WHIP","이닝당 출루허용"],"side":"pitching","available":true,"definition":"볼넷과 피안타의 합을 투구 이닝으로 나눈 값. (볼넷+피안타)×3÷아웃카운트로 계산한다. 낮을수록 좋다.","columns":["walks","hits","innings_outs"],"expr":"ROUND((SUM(walks) + SUM(hits)) * 3.0 / NULLIF(SUM(innings_outs), 0), 2)","order":"ASC"}
+{"id":"strikeouts","name":"탈삼진","aliases":["탈삼진","삼진"],"side":"pitching","available":true,"definition":"투수가 잡아낸 삼진 수의 합.","columns":["strikeouts"],"expr":"SUM(strikeouts)","order":"DESC"}
+{"id":"innings","name":"이닝","aliases":["이닝"],"side":"pitching","available":true,"definition":"투수가 던진 이닝. 아웃카운트(innings_outs)를 3으로 나눈다.","columns":["innings_outs"],"expr":"ROUND(SUM(innings_outs) / 3.0, 1)","order":"DESC"}
+{"id":"pitches","name":"투구수","aliases":["투구수","투구 수"],"side":"pitching","available":true,"definition":"투수가 던진 공의 수의 합.","columns":["pitches"],"expr":"SUM(pitches)","order":"DESC"}
+{"id":"obp","name":"출루율","aliases":["출루율","OBP"],"side":"batting","available":false,"definition":"(안타+볼넷+사구)÷(타수+볼넷+사구+희생플라이). 사구와 희생플라이 컬럼이 분석 뷰에 없어 계산할 수 없다.","columns":[],"expr":null,"order":"DESC"}
+{"id":"slg","name":"장타율","aliases":["장타율","SLG"],"side":"batting","available":false,"definition":"루타수÷타수. 2루타·3루타 컬럼이 분석 뷰에 없어 계산할 수 없다.","columns":[],"expr":null,"order":"DESC"}
+{"id":"ops","name":"OPS","aliases":["OPS"],"side":"batting","available":false,"definition":"출루율+장타율. 두 지표 모두 현재 분석 뷰의 컬럼으로 계산할 수 없다.","columns":[],"expr":null,"order":"DESC"}
+{"id":"war","name":"WAR","aliases":["WAR","대체선수 대비 승리기여도"],"side":"batting","available":false,"definition":"대체선수 대비 승리기여도. 리그 보정값이 필요한 가공 지표이며 문자중계 원본만으로 계산하지 않는다.","columns":[],"expr":null,"order":"DESC"}
+{"id":"wrc_plus","name":"wRC+","aliases":["wRC+","wRC","조정 득점 창출력"],"side":"batting","available":false,"definition":"조정 득점 창출력. 리그·구장 보정값이 필요한 가공 지표이며 문자중계 원본만으로 계산하지 않는다.","columns":[],"expr":null,"order":"DESC"}
